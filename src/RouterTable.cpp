@@ -1,18 +1,9 @@
-#include<iostream>
-#include<arpa/inet.h>
-#include<vector>
-#include<cstdint>
-#include<string>
+#include "../include/routing_table.hpp"
 #include<iomanip>
+#include<arpa/inet.h>
 
 using namespace std;
 
-struct Route{
-    uint32_t destination;
-    uint32_t netmask;
-    uint32_t gateway; 
-    string interface;
-};
 
 uint32_t ipToInt(const string& ip){
     struct in_addr addr;
@@ -66,27 +57,3 @@ void printRouteingTable(){
     }
 }
 
-int main(){
-    addRoute("10.0.0.0", "255.0.0.0", "192.168.1.1", "eth0");  
-    addRoute("10.1.0.0", "255.255.0.0", "192.168.1.2", "eth0");  
-    addRoute("10.1.2.0", "255.255.255.0", "192.168.1.3", "eth0");  
-    printRouteingTable();  
-
-    string target;
-    cout<<"Enter target IP: ";
-    cin>>target;
-
-    uint32_t targetip = ipToInt(target);
-    Route* best = findBestRoute(targetip);
-
-    if(best != nullptr){
-        cout<<"\nBest Route found!\n";
-
-        cout<< "Gateway: "<<best->gateway<<endl;
-        cout <<"Interface: "<<best->interface<<endl;
-    }else{
-        cout<<"\nNo matuching route found.\n";
-    }
-
-    return 0;
-}
